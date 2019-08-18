@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
+import { Formik, Form, Field } from "formik";
 
-import { StripeProvider, useStripe, StripeElement, StripeElements } from "../.";
+import { StripeElement, StripeProvider, withElements } from "../.";
 
 const App = () => {
   return (
@@ -23,7 +24,7 @@ const App = () => {
 
 const Checkout = ({ match: { url } }) => {
   return (
-    <StripeProvider apiKey="asdasd">
+    <StripeProvider apiKey={process.env.STRIPE_KEY}>
       Checkout
       <Switch>
         <Route
@@ -37,17 +38,27 @@ const Checkout = ({ match: { url } }) => {
   );
 };
 
-const Payment = () => {
+const Payment = withElements()(({ elements }) => {
+  const initialValues = {};
+
+  const handleSubmit = async values => {
+    try {
+      const token = await elements.createToken();
+      console.log(token);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <StripeElements>
-      {elements => (
-        <>
-          <StripeElement />
-        </>
-      )}
-    </StripeElements>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Form>
+        <StripeElement />
+        <button type="submit">Submit</button>
+      </Form>
+    </Formik>
   );
-};
+});
 
 ReactDOM.render(
   <BrowserRouter>

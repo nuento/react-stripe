@@ -10,6 +10,7 @@
     "scheduler/tracing": "../node_modules/scheduler/tracing-profiling"
   },
   "dependencies": {
+    "formik": "^1.5.8",
     "react-router-dom": "^5.0.1"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useEffect } from "react";
-import { StripeElementsContext } from "./Elements";
+import { ElementsContext } from "./Elements";
 
 export type StripeElementProps = {
   type?: stripe.elements.elementsType;
@@ -23,7 +23,7 @@ const StripeElement = ({
   onReady
 }: StripeElementProps) => {
   const ref = useRef(null);
-  const elements = useContext(StripeElementsContext);
+  const elements = useContext(ElementsContext);
 
   useEffect(() => {
     if (!elements) return;

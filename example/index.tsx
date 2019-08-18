@@ -1,10 +1,8 @@
-import "react-app-polyfill/ie11";
-
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 
-import { StripeProvider } from "../.";
+import { StripeProvider, useStripe, StripeElement, StripeElements } from "../.";
 
 const App = () => {
   return (
@@ -40,7 +38,15 @@ const Checkout = ({ match: { url } }) => {
 };
 
 const Payment = () => {
-  return <div>input</div>;
+  return (
+    <StripeElements>
+      {elements => (
+        <>
+          <StripeElement />
+        </>
+      )}
+    </StripeElements>
+  );
 };
 
 ReactDOM.render(

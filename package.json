@@ -12,9 +12,6 @@
     "build": "tsdx build",
     "test": "tsdx test --env=jsdom"
   },
-  "peerDependencies": {
-    "react": ">=16"
-  },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"

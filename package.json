@@ -1,21 +1,18 @@
 {
   "name": "@nuento/react-stripe",
   "version": "0.1.0",
+  "description": "",
   "main": "dist/index.js",
   "module": "dist/react-stripe.esm.js",
   "typings": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nuento/react-stripe.git"
+  },
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --env=jsdom"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   },
   "devDependencies": {
     "@types/jest": "^24.0.17",
@@ -30,5 +27,13 @@
     "tsdx": "^0.7.2",
     "tslib": "^1.10.0",
     "typescript": "^3.5.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

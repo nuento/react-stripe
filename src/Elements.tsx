@@ -49,47 +49,27 @@ export class StripeElements extends React.Component<
     }
   };
 
-  // async createToken(tokenOptions?: stripe.TokenOptions): Promise<stripe.Token> {
-  //   const { card, cardCvc, cardExpiry, cardNumber } = this.state;
+  getElement() {
+    const { card, cardCvc, cardExpiry, cardNumber } = this.state;
 
-  //   console.log(this.state);
+    if (!card && !cardCvc && !cardExpiry && !cardNumber) {
+      throw new Error(
+        "Elements must contain card or cardCvc, cardExpiry and cardNumber "
+      );
+    }
 
-  //   if (!card && !cardCvc && !cardExpiry && !cardNumber) {
-  //     throw new Error(
-  //       "Elements must contain card or cardCvc, cardExpiry and cardNumber "
-  //     );
-  //   }
+    let element: stripe.elements.Element;
 
-  //   let element: stripe.elements.Element;
+    if (card) element = card;
+    else if (cardCvc && cardExpiry && cardNumber) element = cardNumber;
+    else throw new Error("Elements form does not contain required elements");
 
-  //   if (card) element = card;
-  //   else if (cardCvc && cardExpiry && cardNumber) element = cardNumber;
-  //   else throw new Error("Elements form does not contain required elements");
-
-  //   const res = await this.context!.createToken(element, tokenOptions);
-
-  //   if ("error" in res) throw res.error;
-
-  //   return res.token!;
-  // }
+    return element;
+  }
 
   createToken = (tokenOptions?: stripe.TokenOptions): Promise<stripe.Token> =>
     new Promise((resolve, reject) => {
-      const { card, cardCvc, cardExpiry, cardNumber } = this.state;
-
-      console.log(this.state);
-
-      if (!card && !cardCvc && !cardExpiry && !cardNumber) {
-        throw new Error(
-          "Elements must contain card or cardCvc, cardExpiry and cardNumber "
-        );
-      }
-
-      let element: stripe.elements.Element;
-
-      if (card) element = card;
-      else if (cardCvc && cardExpiry && cardNumber) element = cardNumber;
-      else throw new Error("Elements form does not contain required elements");
+      const element = this.getElement();
 
       this.context!.createToken(element, tokenOptions).then(res => {
         if ("error" in res) {
@@ -98,6 +78,24 @@ export class StripeElements extends React.Component<
 
         resolve(res.token);
       });
+    });
+
+  handleCardPayment = (
+    clientSecret: string,
+    options?: stripe.HandleCardPaymentOptions
+  ): Promise<stripe.paymentIntents.PaymentIntent> =>
+    new Promise((resolve, reject) => {
+      const element = this.getElement();
+
+      this.context!.handleCardPayment(clientSecret, element, options).then(
+        res => {
+          if ("error" in res) {
+            return reject(res.error);
+          }
+
+          resolve(res.paymentIntent);
+        }
+      );
     });
 
   render() {

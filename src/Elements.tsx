@@ -18,6 +18,10 @@ export type ElementsState = {
 export type ElementsValue = {
   stripe: stripe.Stripe | null;
   createToken: (tokenOptions?: stripe.TokenOptions) => Promise<stripe.Token>;
+  handleCardPayment: (
+    clientSecret: string,
+    options?: stripe.HandleCardPaymentOptions
+  ) => Promise<stripe.paymentIntents.PaymentIntent>;
 };
 
 export type WithElementsProps = {
@@ -103,7 +107,8 @@ export class StripeElements extends React.Component<
       <ElementsContext.Provider value={this.state}>
         {this.props.children({
           stripe: this.context,
-          createToken: this.createToken
+          createToken: this.createToken,
+          handleCardPayment: this.handleCardPayment
         })}
       </ElementsContext.Provider>
     );
